@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Button from '@/components/button/Button.vue'
+import Divider from '@/components/divider/Divider.vue'
 </script>
 <template>
   <div class="home">
@@ -39,6 +40,8 @@ import Button from '@/components/button/Button.vue'
     <Button disabled theme="light">浅色禁用</Button>
     <Button disabled theme="borderless" type="primary">无背景主要禁用</Button>
     <Button disabled theme="solid" type="warning">深色警告禁用</Button>
+
+    <Divider dashed margin="12">123</Divider>
   </div>
 </template>
 

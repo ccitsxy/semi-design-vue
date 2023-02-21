@@ -8,9 +8,7 @@ defineOptions({
   name: 'Button'
 })
 const props = defineProps({
-  ariaLabel: {
-    type: String
-  },
+  ariaLabel: String,
   ariaDisabled: {
     type: Boolean,
     default: false
@@ -27,9 +25,7 @@ const props = defineProps({
     type: String as PropType<HtmlType>,
     default: 'button'
   },
-  icon: {
-    type: Object as PropType<Component>
-  },
+  icon: Object as PropType<Component>,
   iconPosition: {
     type: String as PropType<'left' | 'right'>,
     default: 'left'
@@ -38,12 +34,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  // noHorizontalPadding: {
-  //   type: Object as PropType<Boolean | String | Array<String>>,
-  //   default: () => {
-  //     false
-  //   }
-  // },
+  noHorizontalPadding: {
+    type: [Boolean, String, Array<String>] as PropType<Boolean | String | Array<String>>,
+    default: false
+  },
   size: {
     type: String as PropType<Size>,
     default: 'default'
@@ -70,16 +64,19 @@ const handleContentClick = (e: Event) => {
       disabled ? 'semi-button-disabled' : `semi-button-${props.type}`,
       `semi-button-size-${props.size}`,
       `semi-button-${props.theme}`,
-      { 'semi-button-block': props.block },
-      { 'semi-button-with-icon': props.icon || $slots.icon },
-      { 'semi-button-with-icon-only': !$slots.default },
-      { 'semi-button-loading': props.loading }
+      props.block ? 'semi-button-block' : '',
+      props.icon || $slots.icon ? 'semi-button-with-icon' : '',
+      !$slots.default ? 'semi-button-with-icon-only' : '',
+      props.loading ? 'semi-button-loading' : ''
     ]"
     :type="props.htmlType"
     :aria-disabled="props.ariaDisabled"
   >
     <span class="semi-button-content" @click="handleContentClick">
-      <template v-if="props.iconPosition === 'left'">
+      <template v-if="!$slots.icon">
+        <slot />
+      </template>
+      <template v-else-if="props.iconPosition === 'left'">
         <component :is="props.icon" v-if="props.icon" />
         <slot v-else name="icon" />
         <span class="semi-button-content-right">
