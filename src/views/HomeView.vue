@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import Button from '@/components/button/Button.vue'
 import Divider from '@/components/divider/Divider.vue'
+import Row from '@/components/grid/Row.vue'
+import Col from '@/components/grid/Col.vue'
 </script>
 <template>
   <div class="home">
@@ -31,9 +33,9 @@ import Divider from '@/components/divider/Divider.vue'
     <Button type="warning" :icon="IconCamera" aria-label="截屏" />
     <Button type="danger" :icon="IconCamera" aria-label="截屏" />
     <Button :icon="IconCamera" theme="solid" aria-label="截屏" />
-    <Button :icon="IconCamera" theme="light" aria-label="截屏" /> -->
-    <!-- <Button icon="<IconSidebar />" theme="solid">收起</Button>
-    <Button icon="<IconChevronDown />" theme="solid" icon-position="right">展开选项</Button> -->
+    <Button :icon="IconCamera" theme="light" aria-label="截屏" />
+    <Button :icon="IconSidebar" theme="solid">收起</Button>
+    <Button :icon="IconChevronDown" theme="solid" icon-position="right">展开选项</Button> -->
 
     <Button disabled>禁用</Button>
     <Button disabled theme="borderless">无背景禁用</Button>
@@ -42,6 +44,20 @@ import Divider from '@/components/divider/Divider.vue'
     <Button disabled theme="solid" type="warning">深色警告禁用</Button>
 
     <Divider dashed margin="12">123</Divider>
+
+    <div className="grid">
+      <Row :gutter="{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 40 }">
+        <Col :xs="{ span: 5, offset: 1 }" :lg="{ span: 6, offset: 2 }">
+          <div className="col-content">Col</div>
+        </Col>
+        <Col :xs="{ span: 11, offset: 1 }" :lg="{ span: 6, offset: 2 }"
+          ><div className="col-content">Col</div>
+        </Col>
+        <Col :xs="{ span: 5, offset: 1 }" :lg="{ span: 6, offset: 2 }">
+          <div className="col-content">Col</div>
+        </Col>
+      </Row>
+    </div>
   </div>
 </template>
 
@@ -51,5 +67,33 @@ import Divider from '@/components/divider/Divider.vue'
   gap: 16px;
   padding: 8px;
   flex-wrap: wrap;
+}
+
+.grid {
+  width: 100vw;
+  font-size: 14px;
+}
+
+.grid .semi-row,
+.grid .semi-row-flex {
+  text-align: center;
+}
+
+.grid .semi-row-flex .semi-col,
+.grid .semi-row .semi-col {
+  min-height: 30px;
+  line-height: 30px;
+  background: var(--semi-color-primary-light-default);
+  outline: 1px solid var(--semi-color-primary-light-active);
+}
+
+.grid.grid-gutter .semi-col .col-content,
+.grid.grid-gutter .semi-col .gutter-box {
+  background: var(--semi-color-primary-light-hover);
+}
+
+.grid-flex .semi-row-flex {
+  height: 50px;
+  background: var(--semi-color-fill-0);
 }
 </style>

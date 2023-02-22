@@ -13,12 +13,6 @@ module.exports = {
     ecmaVersion: 'latest'
   },
   rules: {
-    '@typescript-eslint/consistent-type-imports': [
-      'error',
-      {
-        prefer: 'type-imports'
-      }
-    ],
     'vue/multi-word-component-names': 'off'
   },
   globals: {

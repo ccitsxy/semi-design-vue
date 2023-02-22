@@ -319,8 +319,8 @@ packages:
       - supports-color
     dev: true
 
-  /@babel/runtime-corejs3/7.20.13:
-    resolution: {integrity: sha512-p39/6rmY9uvlzRiLZBIB3G9/EBr66LBMcYm7fIDeSBNdRjF2AGD3rFZucUyAgGHC2N+7DdLvVi33uTjSE44FIw==}
+  /@babel/runtime-corejs3/7.21.0:
+    resolution: {integrity: sha512-TDD4UJzos3JJtM+tHX+w2Uc+KWj7GV+VKKFdMVd2Rx8sdA19hcc3P3AHFYd5LVOw+pYuSd5lICC3gm52B6Rwxw==}
     engines: {node: '>=6.9.0'}
     dependencies:
       core-js-pure: 3.28.0
@@ -365,7 +365,7 @@ packages:
   /@douyinfe/semi-animation/2.12.0:
     resolution: {integrity: sha512-OAfL9Nk38ZPqfdKm9k4cvVXXzm16ALI4LxGNZ0qfe2RCLLnYGB/hNzTctoTDjYD35dFv0yroh3qsXtZuP2xNdg==}
     dependencies:
-      '@babel/runtime-corejs3': 7.20.13
+      '@babel/runtime-corejs3': 7.21.0
       bezier-easing: 2.1.0
     dev: false
 

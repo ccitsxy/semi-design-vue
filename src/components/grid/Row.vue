@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { Gutter } from './interface'
+import { computed, provide } from 'vue'
+import { calcRowStyle, rowContextKey, useRowSize, type Gutter } from './grid'
 
 import '@douyinfe/semi-foundation/grid/grid.scss'
 
@@ -16,13 +17,24 @@ const props = defineProps({
   },
   type: String as PropType<'flex'>
 })
+
+const gutter = computed(() => props.gutter)
+const size = useRowSize()
+const rowStyle = computed(() => calcRowStyle(props.gutter, size.value))
+
+provide(rowContextKey, { gutter })
 </script>
 
 <template>
   <div
     :class="[
       'semi-row',
-      props.type === 'flex' ? `semi-row-flex semi-row-${props.justify} semi-row-${props.align}` : ''
+      props.type === 'flex'
+        ? `semi-row-${props.type} semi-row-${props.type}-${props.justify} semi-row-${props.type}-${props.align}`
+        : ''
     ]"
-  ></div>
+    :style="rowStyle"
+  >
+    <slot />
+  </div>
 </template>

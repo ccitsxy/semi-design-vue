@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType, Component } from 'vue'
-import type { HtmlType, Size, Theme, Type } from './interface'
+import type { HtmlType, Size, Theme, Type } from './button'
 
 import '@douyinfe/semi-foundation/button/button.scss'
 
@@ -71,6 +71,7 @@ const handleContentClick = (e: Event) => {
     ]"
     :type="props.htmlType"
     :aria-disabled="props.ariaDisabled"
+    :aria-label="props.ariaLabel"
   >
     <span class="semi-button-content" @click="handleContentClick">
       <template v-if="!$slots.icon">
