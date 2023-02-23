@@ -19,10 +19,10 @@ const props = defineProps({
 })
 
 const gutter = computed(() => props.gutter)
+provide(rowContextKey, { gutter })
+
 const size = useRowSize()
 const rowStyle = computed(() => calcRowStyle(props.gutter, size.value))
-
-provide(rowContextKey, { gutter })
 </script>
 
 <template>

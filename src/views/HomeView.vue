@@ -3,6 +3,8 @@ import Button from '@/components/button/Button.vue'
 import Divider from '@/components/divider/Divider.vue'
 import Row from '@/components/grid/Row.vue'
 import Col from '@/components/grid/Col.vue'
+import Space from '@/components/space/Space.vue'
+import Text from '@/components/typography/Text.vue'
 </script>
 <template>
   <div class="home">
@@ -58,6 +60,14 @@ import Col from '@/components/grid/Col.vue'
         </Col>
       </Row>
     </div>
+
+    <Space :spacing="20">
+      <Button type="secondary">次要</Button>
+      <Button type="tertiary">第三</Button>
+      <Button type="warning">警告</Button>
+    </Space>
+
+    <Text>Text</Text>
   </div>
 </template>
 
@@ -70,7 +80,7 @@ import Col from '@/components/grid/Col.vue'
 }
 
 .grid {
-  width: 100vw;
+  width: 100%;
   font-size: 14px;
 }
 

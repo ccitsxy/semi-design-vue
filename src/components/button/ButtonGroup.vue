@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { Size, Theme, Type } from './button
+import type { Size, Theme, Type } from './button'
 
 import '@douyinfe/semi-foundation/button/button.scss'
 

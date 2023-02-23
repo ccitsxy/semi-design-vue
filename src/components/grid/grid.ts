@@ -39,10 +39,7 @@ export const calcSize = (width: number) => {
 }
 
 export const isServer = typeof window === 'undefined'
-/**
- * rowSizeHook
- * @returns
- */
+
 export function useRowSize() {
   const size = ref(calcSize(isServer ? 0 : window.innerWidth))
   const updateSize = () => {
@@ -60,29 +57,24 @@ export function useRowSize() {
   return size
 }
 
-/**
- *
- * @param gutter
- * @param currentSize
- * @returns
- */
 export function calcRowStyle(gutter: Gutter | [Gutter, Gutter] | undefined, currentSize: string) {
   const rowStyle = {}
-  const getMarginStyle = (gutter: number) =>
+  const getPaddingXStyle = (gutter: number) =>
     Object.assign(rowStyle, {
-      marginLeft: `${gutter / -2}px`,
-      marginRight: `${gutter / -2}px`
+      paddingLeft: `${gutter / -2}px`,
+      paddingRight: `${gutter / -2}px`
     })
 
-  const getRowGapStyle = (gutter: number) =>
+  const getPaddingYStyle = (gutter: number) =>
     Object.assign(rowStyle, {
-      rowGap: `${gutter}px`
+      paddingTop: `${gutter / -2}px`,
+      paddingBottom: `${gutter / -2}px`
     })
 
   const strategyMap = {
     isNumber: (gutter: number) => {
       if (typeof gutter === 'number') {
-        getMarginStyle(gutter)
+        getPaddingXStyle(gutter)
       }
     },
     isArray: (gutter: string | any[]) => {
@@ -90,81 +82,112 @@ export function calcRowStyle(gutter: Gutter | [Gutter, Gutter] | undefined, curr
         strategyMap.isNumber(gutter[0])
 
         if (typeof gutter[1] === 'number') {
-          getRowGapStyle(gutter[1])
+          getPaddingYStyle(gutter[1])
         }
 
         if (typeof gutter[0] === 'object' && !(typeof gutter[0][currentSize] === 'undefined')) {
-          getMarginStyle(gutter[0][currentSize])
+          getPaddingXStyle(gutter[0][currentSize])
         }
 
         if (typeof gutter[1] === 'object' && !(typeof gutter[1][currentSize] === 'undefined')) {
-          getRowGapStyle(gutter[1][currentSize])
+          getPaddingYStyle(gutter[1][currentSize])
         }
       }
     },
-    isObject: (gutter: { [x: string]: number }) => {
+    isObject: (gutter: string | any[]) => {
       if (typeof gutter === 'object' && gutter[currentSize]) {
         if (Array.isArray(gutter) && gutter.length) {
-          // @ts-ignore
-          getMarginStyle(gutter[currentSize][0])
-          // @ts-ignore
-          getRowGapStyle(gutter[currentSize][1])
+          getPaddingXStyle(gutter[currentSize][0])
+          getPaddingYStyle(gutter[currentSize][1])
         } else {
-          getMarginStyle(gutter[currentSize])
+          getPaddingXStyle(gutter[currentSize])
         }
       }
     }
   }
 
   Object.keys(strategyMap).forEach((item) => {
-    // @ts-ignore
     strategyMap[item](gutter)
   })
 
   return rowStyle
 }
 
-/**
- * 计算ColPadding
- * @param gutter
- * @param currentSize
- * @returns
- */
-export function calcColPadding(gutter: any, currentSize: string) {
-  const paddingObj = {}
-  const getPaddingStyle = (gutter: number) =>
-    Object.assign(paddingObj, {
+export const calColSizeClass = (sizesVal: (ColSize | undefined)[]) => {
+  const classes: string[] = []
+
+  const sizes = ['xxl', 'xl', 'lg', 'sm', 'xs']
+
+  sizesVal.forEach((e) => {
+    const size = sizes[sizesVal.indexOf(e)]
+    if (typeof e === 'number') {
+      classes.push(`semi-col-${size}-${e}`)
+    } else if (typeof e === 'object') {
+      classes.push(
+        e.span ? `semi-col-${size}-${e.span}` : '',
+        e.order ? `semi-col-${size}-order-${e.order}` : '',
+        e.offset ? `semi-col-${size}-offset-${e.offset}` : '',
+        e.push ? `semi-col-${size}-push-${e.push}` : '',
+        e.pull ? `semi-col-${size}-pull-${e.pull}` : ''
+      )
+    }
+  })
+
+  return classes
+}
+
+export function calcColStyle(gutter: Gutter | [Gutter, Gutter] | undefined, currentSize: string) {
+  const colStyle = {}
+  const getPaddingXStyle = (gutter: number) =>
+    Object.assign(colStyle, {
       paddingLeft: `${gutter / 2}px`,
       paddingRight: `${gutter / 2}px`
+    })
+
+  const getPaddingYStyle = (gutter: number) =>
+    Object.assign(colStyle, {
+      paddingTop: `${gutter / 2}px`,
+      paddingBottom: `${gutter / 2}px`
     })
 
   const strategyMap = {
     isNumber: (gutter: number) => {
       if (typeof gutter === 'number') {
-        getPaddingStyle(gutter)
+        getPaddingXStyle(gutter)
       }
     },
     isArray: (gutter: string | any[]) => {
       if (Array.isArray(gutter) && gutter.length) {
-        if (typeof gutter[0] === 'number') {
-          getPaddingStyle(gutter[0])
+        strategyMap.isNumber(gutter[0])
+
+        if (typeof gutter[1] === 'number') {
+          getPaddingYStyle(gutter[1])
         }
-        if (typeof gutter[0] === 'object' && gutter[0][currentSize]) {
-          getPaddingStyle(gutter[0][currentSize])
+
+        if (typeof gutter[0] === 'object' && !(typeof gutter[0][currentSize] === 'undefined')) {
+          getPaddingXStyle(gutter[0][currentSize])
+        }
+
+        if (typeof gutter[1] === 'object' && !(typeof gutter[1][currentSize] === 'undefined')) {
+          getPaddingYStyle(gutter[1][currentSize])
         }
       }
     },
-    isObject: (gutter: { [x: string]: number }) => {
+    isObject: (gutter: string | any[]) => {
       if (typeof gutter === 'object' && gutter[currentSize]) {
-        getPaddingStyle(gutter[currentSize])
+        if (Array.isArray(gutter) && gutter.length) {
+          getPaddingXStyle(gutter[currentSize][0])
+          getPaddingYStyle(gutter[currentSize][1])
+        } else {
+          getPaddingXStyle(gutter[currentSize])
+        }
       }
     }
   }
 
   Object.keys(strategyMap).forEach((item) => {
-    // @ts-ignore
     strategyMap[item](gutter)
   })
 
-  return paddingObj
+  return colStyle
 }
