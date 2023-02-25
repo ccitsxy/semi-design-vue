@@ -1,34 +1,20 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import type { PropType, VNode } from 'vue'
+import { h, useSlots } from 'vue'
 import type { Size, Theme, Type } from './button'
 
 import '@douyinfe/semi-foundation/button/button.scss'
 
 defineOptions({
-  name: 'Button'
+  name: 'ButtonGroup'
 })
-// const props =
-defineProps({
+const props = defineProps({
   ariaLabel: {
     type: String
-  },
-  ariaDisabled: {
-    type: Boolean,
-    default: false
-  },
-  block: {
-    type: Boolean,
-    default: false
   },
   disabled: {
     type: Boolean,
     default: false
-  },
-  noHorizontalPadding: {
-    type: Object as PropType<Boolean | String | Array<String>>,
-    default: () => {
-      false
-    }
   },
   size: {
     type: String as PropType<Size>,
@@ -43,8 +29,32 @@ defineProps({
     default: 'primary'
   }
 })
+
+const slots = useSlots()
+const ButtonGroupLine = () =>
+  h('div', {
+    class: [
+      'semi-button-group-line',
+      `semi-button-group-line-${props.theme}`,
+      `semi-button-group-line-${props.type}`
+    ]
+  })
+const ButtonGroupWithLine = () => {
+  const ButtonGroupWithLine: VNode[] = []
+  if (slots.default) {
+    slots.default().forEach((e) => {
+      console.log(e)
+      ButtonGroupWithLine.push(e)
+      ButtonGroupWithLine.push(ButtonGroupLine())
+    })
+  }
+  ButtonGroupWithLine.pop()
+  return ButtonGroupWithLine
+}
 </script>
 
 <template>
-  <div></div>
+  <div class="semi-button-group" role="group">
+    <button-group-with-line />
+  </div>
 </template>

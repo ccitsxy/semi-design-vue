@@ -38,15 +38,11 @@ export const calcSize = (width: number) => {
   return size
 }
 
-export const isServer = typeof window === 'undefined'
-
 export function useRowSize() {
-  const size = ref(calcSize(isServer ? 0 : window.innerWidth))
+  const size = ref(calcSize(typeof window === 'undefined' ? 0 : window.innerWidth))
   const updateSize = () => {
-    size.value = calcSize(isServer ? 0 : window.innerWidth)
+    size.value = calcSize(typeof window === 'undefined' ? 0 : window.innerWidth)
   }
-
-  // useListener('resize', updateSize)
   onMounted(() => {
     addEventListener('resize', updateSize)
   })

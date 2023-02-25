@@ -1,8 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@douyinfe/semi-foundation': ^2.29.0
-  '@douyinfe/semi-theme-default': ^2.29.0
+  '@douyinfe/semi-foundation': 2.29.0
+  '@douyinfe/semi-theme-default': 2.29.0
   '@rushstack/eslint-patch': ^1.1.4
   '@types/jsdom': ^21.1.0
   '@types/node': ^18.11.12
@@ -27,8 +27,8 @@ specifiers:
   vue-tsc: ^1.0.12
 
 dependencies:
-  '@douyinfe/semi-foundation': 2.30.0
-  '@douyinfe/semi-theme-default': 2.30.0
+  '@douyinfe/semi-foundation': 2.29.0
+  '@douyinfe/semi-theme-default': 2.29.0
   vue: 3.2.47
   vue-router: 4.1.6_vue@3.2.47
 
@@ -370,8 +370,8 @@ packages:
       bezier-easing: 2.1.0
     dev: false
 
-  /@douyinfe/semi-foundation/2.30.0:
-    resolution: {integrity: sha512-sDA2FbsKqRavRxlgt8ADjfyK47dFZPBBC26S86W1BY5mpFIKq3e/6ij4nyMwzTz5QXL2rawM7feMm8MRsuoXDw==}
+  /@douyinfe/semi-foundation/2.29.0:
+    resolution: {integrity: sha512-S0JC2T6SYWQ9gJQcHxPbyEMb6Vr3uSxOrrmFpkJCg9EoW+nfnZhSgm1BZkDxA4BSJhJY1RkcYesF6bGElBcL2w==}
     dependencies:
       '@douyinfe/semi-animation': 2.12.0
       async-validator: 3.5.2
@@ -383,8 +383,8 @@ packages:
       scroll-into-view-if-needed: 2.2.31
     dev: false
 
-  /@douyinfe/semi-theme-default/2.30.0:
-    resolution: {integrity: sha512-5uCYuC3IRn9m00SNOmTy86xIA2qRqL5MUOoGmWw2b2MrpjHtSnGSdf4EVGQ2KoRhuuBNPX82stjjSEyopixONQ==}
+  /@douyinfe/semi-theme-default/2.29.0:
+    resolution: {integrity: sha512-qFE7Qzwujtc+UTfiRpXZC4upuMEDFR715hu702ZsmE/GKRCSFJETHje9ESHpN17lFDOvtxjU5/u2kBKfD65dcw==}
     dependencies:
       glob: 7.2.3
     dev: false

@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import type { PropType, Component } from 'vue'
+import type { PropType, Component, CSSProperties } from 'vue'
+import { computed, h, onMounted, useSlots } from 'vue'
 import type { HtmlType, Size, Theme, Type } from './button'
+import SpinIcon from '../spin/SpinIcon.vue'
 
 import '@douyinfe/semi-foundation/button/button.scss'
+import '@douyinfe/semi-foundation/button/iconButton.scss'
+import { Icon } from '../icon'
 
 defineOptions({
   name: 'Button'
@@ -25,7 +29,7 @@ const props = defineProps({
     type: String as PropType<HtmlType>,
     default: 'button'
   },
-  icon: Object as PropType<Component>,
+  icon: [String, Object] as PropType<String | Component>,
   iconPosition: {
     type: String as PropType<'left' | 'right'>,
     default: 'left'
@@ -52,9 +56,33 @@ const props = defineProps({
   }
 })
 
-const handleContentClick = (e: Event) => {
-  props.disabled && e.stopPropagation()
+const buttonStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (Array.isArray(props.noHorizontalPadding)) {
+    props.noHorizontalPadding.includes('left') && (style.paddingLeft = 0)
+    props.noHorizontalPadding.includes('right') && (style.paddingRight = 0)
+  } else if (props.noHorizontalPadding === true) {
+    style.paddingLeft = 0
+    style.paddingRight = 0
+  } else if (typeof props.noHorizontalPadding === 'string') {
+    props.noHorizontalPadding === 'left' && (style.paddingLeft = 0)
+    props.noHorizontalPadding === 'right' && (style.paddingRight = 0)
+  }
+  return style
+})
+
+const slots = useSlots()
+const ButtonIcon = () => {
+  if (props.loading && !props.disabled) {
+    return h(SpinIcon)
+  } else if (props.icon) {
+    return h(Icon, { svg: props.icon })
+  } else if (slots.icon) {
+    return slots.icon()
+  }
 }
+
+onMounted(() => {})
 </script>
 
 <template>
@@ -65,32 +93,53 @@ const handleContentClick = (e: Event) => {
       `semi-button-size-${props.size}`,
       `semi-button-${props.theme}`,
       props.block ? 'semi-button-block' : '',
-      props.icon || $slots.icon ? 'semi-button-with-icon' : '',
-      !$slots.default ? 'semi-button-with-icon-only' : '',
-      props.loading ? 'semi-button-loading' : ''
+      props.loading || props.icon || !$slots.icon ? 'semi-button-with-icon' : '',
+      !$slots.default && (props.icon || $slots.icon || props.loading)
+        ? 'semi-button-with-icon-only'
+        : '',
+      props.loading && !props.disabled ? 'semi-button-loading' : ''
     ]"
+    :style="buttonStyle"
     :type="props.htmlType"
     :aria-disabled="props.ariaDisabled"
     :aria-label="props.ariaLabel"
   >
-    <span class="semi-button-content" @click="handleContentClick">
-      <template v-if="!$slots.icon">
+    <span class="semi-button-content">
+      <template v-if="!$slots.default && (props.icon || $slots.icon || props.loading)">
+        <button-icon />
+      </template>
+
+      <template v-if="!$slots.icon && !props.icon && !props.loading">
         <slot />
       </template>
-      <template v-else-if="props.iconPosition === 'left'">
-        <component :is="props.icon" v-if="props.icon" />
-        <slot v-else name="icon" />
-        <span class="semi-button-content-right">
-          <slot />
-        </span>
-      </template>
-      <template v-else>
-        <span class="semi-button-content-left">
-          <slot />
-        </span>
-        <component :is="props.icon" v-if="props.icon" />
-        <slot v-else name="icon" />
+
+      <template v-if="$slots.default && (props.icon || $slots.icon || props.loading)">
+        <template v-if="props.iconPosition === 'left'">
+          <button-icon />
+          <span class="semi-button-content-right">
+            <slot />
+          </span>
+        </template>
+
+        <template v-if="props.iconPosition === 'right'">
+          <span class="semi-button-content-left">
+            <slot />
+          </span>
+
+          <button-icon />
+        </template>
       </template>
     </span>
   </button>
 </template>
+
+<style lang="scss">
+@keyframes #{$prefix}-animation-rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>

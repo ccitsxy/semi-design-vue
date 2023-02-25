@@ -1,50 +1,43 @@
 <script setup lang="ts">
-import Button from '@/components/button/Button.vue'
-import Divider from '@/components/divider/Divider.vue'
-import Row from '@/components/grid/Row.vue'
-import Col from '@/components/grid/Col.vue'
-import Space from '@/components/space/Space.vue'
-import Text from '@/components/typography/Text.vue'
+import { Button } from '@/components/button'
+import { Divider } from '@/components/divider'
+import { Row } from '@/components/grid'
+import { Col } from '@/components/grid'
+import { Space } from '@/components/space'
+import { ButtonGroup } from '@/components/button'
+import { IconAlarm } from '@/components/icon'
 </script>
 <template>
   <div class="home">
-    <Button>主要按钮</Button>
-    <Button type="secondary">次要按钮</Button>
-    <Button type="tertiary">第三按钮</Button>
-    <Button type="warning">警告按钮</Button>
-    <Button type="danger">危险按钮</Button>
-    <Button theme="solid" type="primary">深色主要</Button>
-    <Button theme="solid" type="secondary">深色次要</Button>
-    <Button theme="solid" type="tertiary">深色第三</Button>
-    <Button theme="solid" type="warning">深色警告</Button>
-    <Button theme="solid" type="danger">深色危险</Button>
-    <Button theme="borderless" type="primary">主要</Button>
-    <Button theme="borderless" type="secondary">次要</Button>
-    <Button theme="borderless" type="tertiary">第三</Button>
-    <Button theme="borderless" type="warning">警告</Button>
-    <Button theme="borderless" type="danger">危险</Button>
-    <Button block>块级按钮</Button>
-    <Button size="large">大尺寸</Button>
-    <Button size="default">默认尺寸</Button>
-    <Button size="small">小尺寸</Button>
+    <Space :spacing="20" wrap>
+      <Button>主要按钮</Button>
+      <Button type="secondary">次要按钮</Button>
+      <Button type="tertiary">第三按钮</Button>
+      <Button type="warning">警告按钮</Button>
+      <Button type="danger">危险按钮</Button>
+      <Button theme="solid" type="primary">深色主要</Button>
+      <Button theme="solid" type="secondary">深色次要</Button>
+      <Button theme="solid" type="tertiary">深色第三</Button>
+      <Button theme="solid" type="warning">深色警告</Button>
+      <Button theme="solid" type="danger">深色危险</Button>
+      <Button theme="borderless" type="primary">主要</Button>
+      <Button theme="borderless" type="secondary">次要</Button>
+      <Button theme="borderless" type="tertiary">第三</Button>
+      <Button theme="borderless" type="warning">警告</Button>
+      <Button theme="borderless" type="danger">危险</Button>
 
-    <!-- <Button :icon="IconCamera" aria-label="截屏" />
-    <Button disabled :icon="IconCamera" aria-label="截屏" />
-    <Button type="primary" :icon="IconCamera" aria-label="截屏" />
-    <Button type="secondary" :icon="IconCamera" aria-label="截屏" />
-    <Button type="warning" :icon="IconCamera" aria-label="截屏" />
-    <Button type="danger" :icon="IconCamera" aria-label="截屏" />
-    <Button :icon="IconCamera" theme="solid" aria-label="截屏" />
-    <Button :icon="IconCamera" theme="light" aria-label="截屏" />
-    <Button :icon="IconSidebar" theme="solid">收起</Button>
-    <Button :icon="IconChevronDown" theme="solid" icon-position="right">展开选项</Button> -->
+      <Button size="large">大尺寸</Button>
+      <Button size="default">默认尺寸</Button>
+      <Button size="small">小尺寸</Button>
 
-    <Button disabled>禁用</Button>
-    <Button disabled theme="borderless">无背景禁用</Button>
-    <Button disabled theme="light">浅色禁用</Button>
-    <Button disabled theme="borderless" type="primary">无背景主要禁用</Button>
-    <Button disabled theme="solid" type="warning">深色警告禁用</Button>
+      <Button disabled>禁用</Button>
+      <Button disabled theme="borderless">无背景禁用</Button>
+      <Button disabled theme="light">浅色禁用</Button>
+      <Button disabled theme="borderless" type="primary">无背景主要禁用</Button>
+      <Button disabled theme="solid" type="warning">深色警告禁用</Button>
 
+      <Button block>块级按钮</Button>
+    </Space>
     <Divider dashed margin="12">123</Divider>
 
     <div className="grid">
@@ -61,13 +54,22 @@ import Text from '@/components/typography/Text.vue'
       </Row>
     </div>
 
-    <Space :spacing="20">
-      <Button type="secondary">次要</Button>
-      <Button type="tertiary">第三</Button>
-      <Button type="warning">警告</Button>
-    </Space>
+    <Button loading>保存</Button>
+    <Button loading>删除</Button>
+    <Button loading>撤销</Button>
+    <Button loading>保存</Button>
+    <Button>
+      <template #icon>
+        <IconAlarm />
+      </template>
+    </Button>
+    <Button :icon="IconAlarm">撤销</Button>
 
-    <Text>Text</Text>
+    <ButtonGroup>
+      <Button>拷贝</Button>
+      <Button>查询</Button>
+      <Button>剪切</Button>
+    </ButtonGroup>
   </div>
 </template>
 
