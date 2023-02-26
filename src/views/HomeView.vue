@@ -6,6 +6,10 @@ import { Col } from '@/components/grid'
 import { Space } from '@/components/space'
 import { ButtonGroup } from '@/components/button'
 import { IconAlarm } from '@/components/icon'
+import { Switch } from '@/components/switch'
+import { ref } from 'vue'
+
+const checked = ref(false)
 </script>
 <template>
   <div class="home">
@@ -65,11 +69,13 @@ import { IconAlarm } from '@/components/icon'
     </Button>
     <Button :icon="IconAlarm">撤销</Button>
 
-    <ButtonGroup>
+    <ButtonGroup size="large" type="danger">
       <Button>拷贝</Button>
       <Button>查询</Button>
       <Button>剪切</Button>
     </ButtonGroup>
+
+    <Switch v-model="checked" />
   </div>
 </template>
 

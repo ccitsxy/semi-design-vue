@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { computed, provide } from 'vue'
-import { calcRowStyle, rowContextKey, useRowSize, type Gutter } from './grid'
+import type { Gutter } from './grid'
+import { calcRowStyle, rowContextKey, useRowSize } from './grid'
 
 import '@douyinfe/semi-foundation/grid/grid.scss'
 
