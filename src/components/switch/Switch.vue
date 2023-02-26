@@ -1,14 +1,82 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
+import { computed } from 'vue'
+import { Spin } from '../spin'
+
 import '@douyinfe/semi-foundation/switch/switch.scss'
 
 defineOptions({
   name: 'Switch'
 })
-// const props = defineProps({})
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false
+  },
+  ariaLabel: String,
+  ariaLabelledby: String,
+  // checked: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  checkedText: String,
+  // defaultChecked: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  disabled: {
+    type: Boolean,
+    default: false
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  },
+  size: {
+    type: String as PropType<'large' | 'default' | 'small'>,
+    default: 'default'
+  },
+  uncheckedText: String
+})
+const emit = defineEmits(['update:modelValue'])
+
+const value = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value: boolean) {
+    emit('update:modelValue', value)
+  }
+})
 </script>
 
 <template>
-  <div>
-    <slot />
+  <div
+    :class="[
+      'semi-switch',
+      props.modelValue ? 'semi-switch-checked' : '',
+      `semi-switch-${props.size}`,
+      props.loading ? 'semi-switch-loading' : ''
+    ]"
+  >
+    <spin
+      v-if="props.loading"
+      wrapper-class-name="semi-switch-loading-spin"
+      :size="props.size === 'default' ? 'middle' : props.size"
+    />
+    <div v-else class="semi-switch-knob" aria-hidden="true" />
+    <div v-if="props.checkedText && props.modelValue" class="semi-switch-checked-text">
+      {{ props.checkedText }}
+    </div>
+    <div v-if="props.uncheckedText && !props.modelValue" class="semi-switch-unchecked-text">
+      {{ props.uncheckedText }}
+    </div>
+    <input
+      v-model="value"
+      type="checkbox"
+      class="semi-switch-native-control"
+      role="switch"
+      :aria-disabled="props.disabled"
+    />
   </div>
 </template>
