@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { PropType, VNode } from 'vue'
-import { h, useSlots } from 'vue'
-import type { Size, Theme, Type } from './button'
+import { computed, type PropType, type VNode } from 'vue'
+import { provide, h, useSlots } from 'vue'
+import { type Size, type Theme, type Type, buttonGroupContextKey } from './button'
 
 import '@douyinfe/semi-foundation/button/button.scss'
 
@@ -30,6 +30,11 @@ const props = defineProps({
   }
 })
 
+const disabled = computed(() => props.disabled)
+const size = computed(() => props.size)
+const type = computed(() => props.type)
+provide(buttonGroupContextKey, { disabled, size, type })
+
 const slots = useSlots()
 const ButtonGroupLine = () =>
   h('div', {
@@ -43,7 +48,6 @@ const ButtonGroupWithLine = () => {
   const ButtonGroupWithLine: VNode[] = []
   if (slots.default) {
     slots.default().forEach((e) => {
-      console.log(e)
       ButtonGroupWithLine.push(e)
       ButtonGroupWithLine.push(ButtonGroupLine())
     })

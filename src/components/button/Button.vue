@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType, Component, CSSProperties } from 'vue'
-import { computed, h, onMounted, useSlots } from 'vue'
-import type { HtmlType, Size, Theme, Type } from './button'
+import { inject, computed, h, onMounted, useSlots } from 'vue'
+import { type HtmlType, type Size, type Theme, type Type, buttonGroupContextKey } from './button'
 import SpinIcon from '../spin/SpinIcon.vue'
 
 import '@douyinfe/semi-foundation/button/button.scss'
@@ -56,6 +56,12 @@ const props = defineProps({
   }
 })
 
+const { disabled, size, type } = inject(buttonGroupContextKey, {
+  disabled: computed(() => props.disabled),
+  size: computed(() => props.size),
+  type: computed(() => props.type)
+})
+
 const buttonStyle = computed(() => {
   const style: CSSProperties = {}
   if (Array.isArray(props.noHorizontalPadding)) {
@@ -89,8 +95,8 @@ onMounted(() => {})
   <button
     :class="[
       'semi-button',
-      disabled ? 'semi-button-disabled' : `semi-button-${props.type}`,
-      `semi-button-size-${props.size}`,
+      disabled ? 'semi-button-disabled' : `semi-button-${type}`,
+      `semi-button-size-${size}`,
       `semi-button-${props.theme}`,
       props.block ? 'semi-button-block' : '',
       props.loading || props.icon || !$slots.icon ? 'semi-button-with-icon' : '',
