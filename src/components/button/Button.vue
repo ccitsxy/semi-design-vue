@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { PropType, Component, CSSProperties } from 'vue'
+import type { PropType, Component, CSSProperties, ButtonHTMLAttributes } from 'vue'
 import { inject, computed, h, onMounted, useSlots } from 'vue'
-import { type HtmlType, type Size, type Theme, type Type, buttonGroupContextKey } from './button'
+import type { HtmlType, Size, Theme, Type } from './button'
+import { buttonGroupContextKey } from './button'
 import SpinIcon from '../spin/SpinIcon.vue'
 
 import '@douyinfe/semi-foundation/button/button.scss'
@@ -12,9 +13,9 @@ defineOptions({
   name: 'Button'
 })
 const props = defineProps({
-  ariaLabel: String,
+  ariaLabel: String as PropType<ButtonHTMLAttributes['aria-label']>,
   ariaDisabled: {
-    type: Boolean,
+    type: Boolean as PropType<ButtonHTMLAttributes['aria-disabled']>,
     default: false
   },
   block: {

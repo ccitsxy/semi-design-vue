@@ -5,9 +5,10 @@ import { Row } from '@/components/grid'
 import { Col } from '@/components/grid'
 import { Space } from '@/components/space'
 import { ButtonGroup } from '@/components/button'
-import { IconAlarm } from '@/components/icon'
+import { Icon, IconAlarm } from '@/components/icon'
 import { Switch } from '@/components/switch'
 import { ref } from 'vue'
+import Collapsible from '@/components/collapsible/Collapsible.vue'
 
 const checked = ref(false)
 </script>
@@ -42,7 +43,6 @@ const checked = ref(false)
 
       <Button block>块级按钮</Button>
     </Space>
-    <Divider dashed margin="12">123</Divider>
 
     <div className="grid">
       <Row :gutter="{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 40 }">
@@ -75,7 +75,28 @@ const checked = ref(false)
       <Button>剪切</Button>
     </ButtonGroup>
 
+    <Icon :svg="IconAlarm" />
+
     <Switch v-model="checked" />
+
+    <Divider dashed margin="12">123</Divider>
+
+    <Collapsible :is-open="checked" :collapse-height="60">
+      <ul>
+        <li>
+          <p>Semi Design 以内容优先进行设计。</p>
+        </li>
+        <li>
+          <p>更容易地自定义主题。</p>
+        </li>
+        <li>
+          <p>适用国际化场景。</p>
+        </li>
+        <li>
+          <p>效率场景加入人性化关怀。</p>
+        </li>
+      </ul>
+    </Collapsible>
   </div>
 </template>
 

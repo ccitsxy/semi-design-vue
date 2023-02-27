@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import type { PropType, HTMLAttributes } from 'vue'
 import { computed } from 'vue'
 import { Spin } from '../spin'
 
@@ -13,8 +13,8 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  ariaLabel: String,
-  ariaLabelledby: String,
+  ariaLabel: String as PropType<HTMLAttributes['aria-label']>,
+  ariaLabelledby: String as PropType<HTMLAttributes['aria-labelledby']>,
   // checked: {
   //   type: Boolean,
   //   default: false
@@ -65,10 +65,16 @@ const value = computed({
       :size="props.size === 'default' ? 'middle' : props.size"
     />
     <div v-else class="semi-switch-knob" aria-hidden="true" />
-    <div v-if="props.checkedText && props.modelValue" class="semi-switch-checked-text">
+    <div
+      v-if="props.checkedText && props.modelValue && props.size !== 'small'"
+      class="semi-switch-checked-text"
+    >
       {{ props.checkedText }}
     </div>
-    <div v-if="props.uncheckedText && !props.modelValue" class="semi-switch-unchecked-text">
+    <div
+      v-if="props.uncheckedText && !props.modelValue && props.size !== 'small'"
+      class="semi-switch-unchecked-text"
+    >
       {{ props.uncheckedText }}
     </div>
     <input
@@ -76,6 +82,7 @@ const value = computed({
       type="checkbox"
       class="semi-switch-native-control"
       role="switch"
+      :aria-checked="props.modelValue"
       :aria-disabled="props.disabled"
     />
   </div>

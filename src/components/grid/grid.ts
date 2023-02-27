@@ -1,4 +1,6 @@
-import { type InjectionKey, type ComputedRef, ref, onMounted, onUnmounted } from 'vue'
+import type { InjectionKey, ComputedRef } from 'vue'
+import { ref } from 'vue'
+import { useEventListener } from '@vueuse/core'
 
 export type Breakpoint = 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs'
 
@@ -43,13 +45,7 @@ export function useRowSize() {
   const updateSize = () => {
     size.value = calcSize(typeof window === 'undefined' ? 0 : window.innerWidth)
   }
-  onMounted(() => {
-    addEventListener('resize', updateSize)
-  })
-  onUnmounted(() => {
-    removeEventListener('resize', updateSize)
-  })
-
+  useEventListener('resize', updateSize)
   return size
 }
 

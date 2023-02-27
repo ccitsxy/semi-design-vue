@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, type PropType, type VNode } from 'vue'
-import { provide, h, useSlots } from 'vue'
-import { type Size, type Theme, type Type, buttonGroupContextKey } from './button'
+import type { PropType, VNode, HTMLAttributes } from 'vue'
+import { provide, h, useSlots, computed } from 'vue'
+import type { Size, Theme, Type } from './button'
+import { buttonGroupContextKey } from './button'
 
 import '@douyinfe/semi-foundation/button/button.scss'
 
@@ -10,7 +11,7 @@ defineOptions({
 })
 const props = defineProps({
   ariaLabel: {
-    type: String
+    type: String as PropType<HTMLAttributes['aria-label']>
   },
   disabled: {
     type: Boolean,
@@ -58,7 +59,7 @@ const ButtonGroupWithLine = () => {
 </script>
 
 <template>
-  <div class="semi-button-group" role="group">
+  <div class="semi-button-group" role="group" :aria-label="props.ariaLabel">
     <button-group-with-line />
   </div>
 </template>

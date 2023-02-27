@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { PropType, HTMLAttributes } from 'vue'
+
 defineOptions({
   name: 'SplitButtonGroup'
 })
 const props = defineProps({
-  ariaLabel: String
+  ariaLabel: String as PropType<HTMLAttributes['aria-label']>
 })
 </script>
 

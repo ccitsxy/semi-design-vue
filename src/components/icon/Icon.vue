@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { Component, PropType } from 'vue'
+import type { Component, PropType, SVGAttributes } from 'vue'
+import { computed } from 'vue'
 
 defineOptions({
   name: 'Icon'
 })
 const props = defineProps({
+  ariaLabel: String as PropType<SVGAttributes['aria-label']>,
   rotate: Number,
   size: {
     type: String as PropType<
@@ -14,6 +16,18 @@ const props = defineProps({
   },
   spin: Boolean,
   svg: [String, Object] as PropType<String | Component>
+})
+const ariaLabel = computed(() => {
+  if (props.ariaLabel === undefined) {
+    if (typeof props.svg === 'string') {
+      return props.svg.toLowerCase()
+    } else {
+      const component = props.svg as Component
+      return component.name?.toLowerCase()
+    }
+  } else {
+    return props.ariaLabel
+  }
 })
 </script>
 
@@ -25,7 +39,7 @@ const props = defineProps({
       transform: `rotate(${props.rotate}deg)`
     }"
   >
-    <component v-if="props" :is="props.svg" />
+    <component v-if="props.svg" :is="props.svg" :aria-label="ariaLabel" />
     <slot v-else />
   </span>
 </template>
