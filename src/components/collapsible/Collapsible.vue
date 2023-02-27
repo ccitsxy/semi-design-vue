@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PropType, HTMLAttributes, CSSProperties } from 'vue'
 import { watch, shallowRef, computed } from 'vue'
+import { useElementSize } from '@vueuse/core'
 
 import '@douyinfe/semi-foundation/collapsible/collapsible.scss'
-import { useElementSize } from '@vueuse/core'
 
 defineOptions({
   name: 'Collapsible'
@@ -25,15 +25,15 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  keepDOM: {
-    type: Boolean,
-    default: false
-  },
+  // keepDOM: {
+  //   type: Boolean,
+  //   default: false
+  // },
   motion: {
     type: Boolean,
     default: true
   },
-  // reCalcKey: [Number, String],
+  // reCalcKey: [Number, String] as PropType<Number|String>,
   id: String as PropType<HTMLAttributes['id']>
 })
 

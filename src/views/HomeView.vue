@@ -8,7 +8,8 @@ import { ButtonGroup } from '@/components/button'
 import { Icon, IconAlarm } from '@/components/icon'
 import { Switch } from '@/components/switch'
 import { ref } from 'vue'
-import Collapsible from '@/components/collapsible/Collapsible.vue'
+import { Collapsible } from '@/components/collapsible'
+import { Tooltip } from '@/components/tooltip'
 
 const checked = ref(false)
 </script>
@@ -97,6 +98,10 @@ const checked = ref(false)
         </li>
       </ul>
     </Collapsible>
+    <Tooltip>
+      剪切
+      <template #content> Semi Design 以内容优先进行设计。 </template>
+    </Tooltip>
   </div>
 </template>
 

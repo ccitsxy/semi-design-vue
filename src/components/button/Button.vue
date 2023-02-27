@@ -4,10 +4,11 @@ import { inject, computed, h, onMounted, useSlots } from 'vue'
 import type { HtmlType, Size, Theme, Type } from './button'
 import { buttonGroupContextKey } from './button'
 import SpinIcon from '../spin/SpinIcon.vue'
+import { Icon } from '../icon'
+import { isString } from '@/utils'
 
 import '@douyinfe/semi-foundation/button/button.scss'
 import '@douyinfe/semi-foundation/button/iconButton.scss'
-import { Icon } from '../icon'
 
 defineOptions({
   name: 'Button'
@@ -71,7 +72,7 @@ const buttonStyle = computed(() => {
   } else if (props.noHorizontalPadding === true) {
     style.paddingLeft = 0
     style.paddingRight = 0
-  } else if (typeof props.noHorizontalPadding === 'string') {
+  } else if (isString(props.noHorizontalPadding)) {
     props.noHorizontalPadding === 'left' && (style.paddingLeft = 0)
     props.noHorizontalPadding === 'right' && (style.paddingRight = 0)
   }

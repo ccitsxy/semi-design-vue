@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Component, PropType, SVGAttributes } from 'vue'
 import { computed } from 'vue'
+import { isString, isUndefined } from '@/utils'
 
 defineOptions({
   name: 'Icon'
@@ -18,8 +19,8 @@ const props = defineProps({
   svg: [String, Object] as PropType<String | Component>
 })
 const ariaLabel = computed(() => {
-  if (props.ariaLabel === undefined) {
-    if (typeof props.svg === 'string') {
+  if (isUndefined(props.ariaLabel)) {
+    if (isString(props.svg)) {
       return props.svg.toLowerCase()
     } else {
       const component = props.svg as Component

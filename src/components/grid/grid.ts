@@ -1,6 +1,7 @@
 import type { InjectionKey, ComputedRef } from 'vue'
 import { ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
+import { isNumber, isObject, isClient, isUndefined } from '@/utils'
 
 export type Breakpoint = 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs'
 
@@ -41,9 +42,9 @@ export const calcSize = (width: number) => {
 }
 
 export function useRowSize() {
-  const size = ref(calcSize(typeof window === 'undefined' ? 0 : window.innerWidth))
+  const size = ref(calcSize(isClient ? window.innerWidth : 0))
   const updateSize = () => {
-    size.value = calcSize(typeof window === 'undefined' ? 0 : window.innerWidth)
+    size.value = calcSize(isClient ? window.innerWidth : 0)
   }
   useEventListener('resize', updateSize)
   return size
@@ -65,7 +66,7 @@ export function calcRowStyle(gutter: Gutter | [Gutter, Gutter] | undefined, curr
 
   const strategyMap = {
     isNumber: (gutter: number) => {
-      if (typeof gutter === 'number') {
+      if (isNumber(gutter)) {
         getPaddingXStyle(gutter)
       }
     },
@@ -73,21 +74,21 @@ export function calcRowStyle(gutter: Gutter | [Gutter, Gutter] | undefined, curr
       if (Array.isArray(gutter) && gutter.length) {
         strategyMap.isNumber(gutter[0])
 
-        if (typeof gutter[1] === 'number') {
+        if (isNumber(gutter[1])) {
           getPaddingYStyle(gutter[1])
         }
 
-        if (typeof gutter[0] === 'object' && !(typeof gutter[0][currentSize] === 'undefined')) {
+        if (isObject(gutter[0]) && !isUndefined(gutter[0][currentSize])) {
           getPaddingXStyle(gutter[0][currentSize])
         }
 
-        if (typeof gutter[1] === 'object' && !(typeof gutter[1][currentSize] === 'undefined')) {
+        if (isObject(gutter[1]) && !isUndefined(gutter[1][currentSize])) {
           getPaddingYStyle(gutter[1][currentSize])
         }
       }
     },
     isObject: (gutter: string | any[]) => {
-      if (typeof gutter === 'object' && gutter[currentSize]) {
+      if (isObject(gutter) && gutter[currentSize]) {
         if (Array.isArray(gutter) && gutter.length) {
           getPaddingXStyle(gutter[currentSize][0])
           getPaddingYStyle(gutter[currentSize][1])
@@ -112,9 +113,9 @@ export const calColSizeClass = (sizesVal: (ColSize | undefined)[]) => {
 
   sizesVal.forEach((e) => {
     const size = sizes[sizesVal.indexOf(e)]
-    if (typeof e === 'number') {
+    if (isNumber(e)) {
       classes.push(`semi-col-${size}-${e}`)
-    } else if (typeof e === 'object') {
+    } else if (isObject(e)) {
       classes.push(
         e.span ? `semi-col-${size}-${e.span}` : '',
         e.order ? `semi-col-${size}-order-${e.order}` : '',
@@ -144,7 +145,7 @@ export function calcColStyle(gutter: Gutter | [Gutter, Gutter] | undefined, curr
 
   const strategyMap = {
     isNumber: (gutter: number) => {
-      if (typeof gutter === 'number') {
+      if (isNumber(gutter)) {
         getPaddingXStyle(gutter)
       }
     },
@@ -152,21 +153,21 @@ export function calcColStyle(gutter: Gutter | [Gutter, Gutter] | undefined, curr
       if (Array.isArray(gutter) && gutter.length) {
         strategyMap.isNumber(gutter[0])
 
-        if (typeof gutter[1] === 'number') {
+        if (isNumber(gutter[1])) {
           getPaddingYStyle(gutter[1])
         }
 
-        if (typeof gutter[0] === 'object' && !(typeof gutter[0][currentSize] === 'undefined')) {
+        if (isObject(gutter[0]) && !isUndefined(gutter[0][currentSize])) {
           getPaddingXStyle(gutter[0][currentSize])
         }
 
-        if (typeof gutter[1] === 'object' && !(typeof gutter[1][currentSize] === 'undefined')) {
+        if (isObject(gutter[1]) && !isUndefined(gutter[1][currentSize])) {
           getPaddingYStyle(gutter[1][currentSize])
         }
       }
     },
     isObject: (gutter: string | any[]) => {
-      if (typeof gutter === 'object' && gutter[currentSize]) {
+      if (isObject(gutter) && gutter[currentSize]) {
         if (Array.isArray(gutter) && gutter.length) {
           getPaddingXStyle(gutter[currentSize][0])
           getPaddingYStyle(gutter[currentSize][1])

@@ -19,7 +19,7 @@ const props = defineProps({
   //   type: Boolean,
   //   default: false
   // },
-  checkedText: String,
+  // checkedText: String,
   // defaultChecked: {
   //   type: Boolean,
   //   default: false
@@ -35,8 +35,8 @@ const props = defineProps({
   size: {
     type: String as PropType<'large' | 'default' | 'small'>,
     default: 'default'
-  },
-  uncheckedText: String
+  }
+  // uncheckedText: String
 })
 const emit = defineEmits(['update:modelValue'])
 
@@ -66,16 +66,16 @@ const value = computed({
     />
     <div v-else class="semi-switch-knob" aria-hidden="true" />
     <div
-      v-if="props.checkedText && props.modelValue && props.size !== 'small'"
+      v-if="$slots.checkedText && props.modelValue && props.size !== 'small'"
       class="semi-switch-checked-text"
     >
-      {{ props.checkedText }}
+      <slot name="checkedText" />
     </div>
     <div
-      v-if="props.uncheckedText && !props.modelValue && props.size !== 'small'"
+      v-if="$slots.uncheckedText && !props.modelValue && props.size !== 'small'"
       class="semi-switch-unchecked-text"
     >
-      {{ props.uncheckedText }}
+      <slot name="uncheckedText" />
     </div>
     <input
       v-model="value"
