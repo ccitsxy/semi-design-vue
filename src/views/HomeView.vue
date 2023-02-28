@@ -98,8 +98,9 @@ const checked = ref(false)
         </li>
       </ul>
     </Collapsible>
-    <Tooltip>
-      剪切
+
+    <Tooltip :arrow-point-at-center="false">
+      <Button>主要按钮</Button><Button>主要按钮</Button>
       <template #content> Semi Design 以内容优先进行设计。 </template>
     </Tooltip>
   </div>
@@ -109,7 +110,7 @@ const checked = ref(false)
 .home {
   display: flex;
   gap: 16px;
-  padding: 8px;
+  /* padding: 8px; */
   flex-wrap: wrap;
 }
 

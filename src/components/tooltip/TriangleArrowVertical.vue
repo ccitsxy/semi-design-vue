@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({
-  name: 'TriangleArrow'
+  name: 'TriangleArrowVertical'
 })
 </script>
 
@@ -8,9 +8,9 @@ defineOptions({
   <svg
     aria-hidden="true"
     class="semi-tooltip-icon-arrow"
-    width="24"
-    height="7"
-    viewBox="0 0 24 7"
+    width="7"
+    height="24"
+    viewBox="0 0 7 24"
     fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
     style="fill: currentcolor"
