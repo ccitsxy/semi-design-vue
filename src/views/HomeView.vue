@@ -99,8 +99,8 @@ const checked = ref(false)
       </ul>
     </Collapsible>
 
-    <Tooltip :arrow-point-at-center="false">
-      <Button>主要按钮</Button><Button>主要按钮</Button>
+    <Tooltip position="topLeft" :arrow-point-at-center="false">
+      <Button>主要按钮</Button>
       <template #content> Semi Design 以内容优先进行设计。 </template>
     </Tooltip>
   </div>

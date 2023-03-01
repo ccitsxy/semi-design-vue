@@ -1,5 +1,5 @@
 import type { InjectionKey, ComputedRef } from 'vue'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { isNumber, isObject, isClient, isUndefined } from '@/utils'
 
@@ -42,7 +42,7 @@ export const calcSize = (width: number) => {
 }
 
 export function useRowSize() {
-  const size = ref(calcSize(isClient ? window.innerWidth : 0))
+  const size = shallowRef(calcSize(isClient ? window.innerWidth : 0))
   const updateSize = () => {
     size.value = calcSize(isClient ? window.innerWidth : 0)
   }

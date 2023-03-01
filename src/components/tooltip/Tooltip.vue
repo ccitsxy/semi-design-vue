@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref, watch } from 'vue'
+import type { PropType } from 'vue'
 import { useFloating, offset, flip, shift, autoUpdate, arrow } from '@floating-ui/vue'
+import type { Placement } from '@floating-ui/vue'
+import { useElementHover, useFocusWithin, onClickOutside } from '@vueuse/core'
+import { xPlacement, Position } from './tooltip'
+import type { HTMLElementTagNameKey, MarginObject } from './tooltip'
 
 import TriangleArrow from './TriangleArrow.vue'
 import TriangleArrowVertical from './TriangleArrowVertical.vue'
@@ -11,41 +16,94 @@ defineOptions({
   name: 'Tooltip'
 })
 const props = defineProps({
+  autoAdjustOverflow: {
+    type: Boolean,
+    default: true
+  },
   arrowPointAtCenter: {
     type: Boolean,
     default: true
   },
-  show: {
+  // content: String
+  clickToHide: {
     type: Boolean,
     default: false
+  },
+  disableFocusListener: {
+    type: Boolean,
+    default: false
+  },
+  getPopupContainer: {
+    type: String as PropType<HTMLElementTagNameKey>
+  },
+  margin: {
+    type: [Number, Object] as PropType<Number | MarginObject>,
+    default: 0
+  },
+  mouseEnterDelay: {
+    type: Number,
+    default: 50
+  },
+  mouseLeaveDelay: {
+    type: Number,
+    default: 50
+  },
+  motion: {
+    type: Boolean,
+    default: true
+  },
+  position: {
+    type: String as PropType<keyof typeof Position>,
+    default: 'top'
+  },
+  prefixCls: {
+    type: String,
+    default: 'semi-tooltip'
+  },
+  preventScroll: Boolean,
+  rePosKey: [String, Number] as PropType<String | Number>,
+  spacing: {
+    type: Number,
+    default: 8
+  },
+  showArrow: {
+    type: Boolean,
+    default: true
+  },
+  stopPropagation: {
+    type: Boolean,
+    default: false
+  },
+  transformFromCenter: {
+    type: Boolean,
+    default: true
+  },
+  trigger: {
+    type: String as PropType<'hover' | 'focus' | 'click' | 'custom'>,
+    default: 'hover'
+  },
+  visible: {
+    type: Boolean,
+    default: false
+  },
+  wrapperClassName: String,
+  wrapperId: String,
+  zIndex: {
+    type: Number,
+    default: 1060
   }
 })
 
-const reference = ref<HTMLElement | null>(null)
-const floating = ref<HTMLElement | null>(null)
-const floatingArrow = ref<HTMLElement | null>(null)
-const { x, y, strategy, middlewareData, placement } = useFloating(reference, floating, {
-  middleware: [offset(8), flip(), shift(), arrow({ element: floatingArrow })],
+const trigger = ref<HTMLElement | null>(null)
+const content = ref<HTMLElement | null>(null)
+const contentArrow = ref<HTMLElement | null>(null)
+
+const { x, y, strategy, middlewareData, placement } = useFloating(trigger, content, {
+  placement: Position[props.position] as Placement,
+  middleware: [offset(8), flip(), shift(), arrow({ element: contentArrow })],
   whileElementsMounted: autoUpdate
 })
-
-const arrowData = computed(() => middlewareData.value.arrow)
-
-const xPlacement = {
-  top: 'top',
-  bottom: 'bottom',
-  left: 'left',
-  right: 'right',
-  'top-start': 'topLeft',
-  'bottom-start': 'bottomLeft',
-  'left-start': 'leftTop',
-  'right-start': 'rightTop',
-  'top-end': 'topRight',
-  'bottom-end': 'bottomRight',
-  'left-end': 'leftBottom',
-  'right-end': 'rightBottom'
-}
-
+const contentArrowData = computed(() => middlewareData.value.arrow)
 const staticSide = computed(() => {
   return {
     top: 'bottom',
@@ -54,16 +112,67 @@ const staticSide = computed(() => {
     left: 'right'
   }[placement.value.split('-')[0]] as string
 })
+
+const show = ref(false)
+
+const triggerIsHovered = useElementHover(trigger)
+const contentIsHovered = useElementHover(content)
+
+const { focused: triggerIsFocused } = useFocusWithin(trigger)
+
+const triggerIsClicked = ref(false)
+const contentIsClicked = ref(false)
+
+onClickOutside(trigger, () => {
+  triggerIsClicked.value = false
+})
+
+onClickOutside(content, () => {
+  contentIsClicked.value = false
+})
+watch(
+  () => [
+    triggerIsHovered.value,
+    contentIsHovered.value,
+    triggerIsFocused.value,
+    triggerIsClicked.value,
+    contentIsClicked.value
+  ],
+  () => {
+    if (
+      (props.trigger === 'hover' &&
+        (triggerIsHovered.value === true || contentIsHovered.value === true)) ||
+      (props.trigger === 'focus' && triggerIsFocused.value === true) ||
+      (props.trigger === 'click' &&
+        (triggerIsClicked.value === true || contentIsClicked.value === true))
+    ) {
+      show.value = true
+    }
+  }
+)
 </script>
 
 <template>
-  <span ref="reference" style="height: fit-content; width: fit-content">
+  <component
+    v-if="$slots.default && $slots.default().length === 1"
+    :is="$slots.default()[0]"
+    ref="trigger"
+    style="height: fit-content; width: fit-content"
+    @click="triggerIsClicked = true"
+  />
+  <span
+    v-else
+    ref="trigger"
+    style="height: fit-content; width: fit-content"
+    @click="triggerIsClicked = true"
+  >
     <slot />
   </span>
 
   <Transition>
     <div
-      ref="floating"
+      v-if="show"
+      ref="content"
       class="semi-tooltip-wrapper semi-tooltip-wrapper-show"
       :style="{
         position: strategy,
@@ -75,16 +184,31 @@ const staticSide = computed(() => {
       }"
       :x-placement="xPlacement[placement]"
       role="tooltip"
+      @click="contentIsClicked = true"
     >
       <slot name="content" />
-      {{ placement }}
+      {{ props.visible }}
+      <br />
+      triggerHover: {{ triggerIsHovered }} <br />contetnHover: {{ contentIsHovered }}
+      <br />
+      triggerFocusWithin: {{ triggerIsFocused }}
+      <br />
+      triggerClick: {{ triggerIsClicked }} <br />contentClick: {{ contentIsClicked }}
 
       <TriangleArrow
         v-if="placement.startsWith('top') || placement.startsWith('bottom')"
-        ref="floatingArrow"
+        ref="contentArrow"
         :style="{
-          top: props.arrowPointAtCenter ? (arrowData?.y != null ? `${arrowData?.y}px` : '') : '',
-          left: props.arrowPointAtCenter ? (arrowData?.x != null ? `${arrowData.x}px` : '') : '',
+          top: props.arrowPointAtCenter
+            ? contentArrowData?.y != null
+              ? `${contentArrowData?.y}px`
+              : ''
+            : '',
+          left: props.arrowPointAtCenter
+            ? contentArrowData?.x != null
+              ? `${contentArrowData.x}px`
+              : ''
+            : '',
           bottom: props.arrowPointAtCenter ? 'unset' : '',
           right: props.arrowPointAtCenter ? 'unset' : '',
           [staticSide]: '-6px',
@@ -93,10 +217,18 @@ const staticSide = computed(() => {
       />
       <TriangleArrowVertical
         v-if="placement.startsWith('left') || placement.startsWith('right')"
-        ref="floatingArrow"
+        ref="contentArrow"
         :style="{
-          top: props.arrowPointAtCenter ? (arrowData?.y != null ? `${arrowData?.y}px` : '') : '',
-          left: props.arrowPointAtCenter ? (arrowData?.x != null ? `${arrowData.x}px` : '') : '',
+          top: props.arrowPointAtCenter
+            ? contentArrowData?.y != null
+              ? `${contentArrowData?.y}px`
+              : ''
+            : '',
+          left: props.arrowPointAtCenter
+            ? contentArrowData?.x != null
+              ? `${contentArrowData.x}px`
+              : ''
+            : '',
           bottom: props.arrowPointAtCenter ? 'unset' : '',
           right: props.arrowPointAtCenter ? 'unset' : '',
           [staticSide]: '-6px'
